@@ -1,12 +1,21 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Logger } from '@nestjs/common';
+import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
 
-@Controller()
+@Controller('api/v1')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  private logger = new Logger(AppController.name);
+
+  private clientAdminBackend: ClientProxy;
+
+  constructor() {
+    this.clientAdminBackend = ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: [process.env.RABBITMQ_URL],
+        queue: process.env.RABBITMQ_QUEUE
+      }
+    });
   }
+
 }
