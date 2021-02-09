@@ -1,5 +1,7 @@
-import { Controller, Logger } from '@nestjs/common';
+import { Body, Controller, Logger, Post, UsePipes } from '@nestjs/common';
 import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { CreateCategoryDTO } from './dtos/categories/create-category.dto';
+import { RequestParameterValidation } from './pipes/RequestParameterValidation.pipe';
 
 @Controller('api/v1')
 export class AppController {
@@ -16,6 +18,12 @@ export class AppController {
         queue: process.env.RABBITMQ_QUEUE
       }
     });
+  }
+
+  @Post('categories')
+  @UsePipes(RequestParameterValidation)
+  async createCategory(@Body() createCategoryDTO: CreateCategoryDTO) {
+    return await this.clientAdminBackend.emit('create-category', createCategoryDTO);
   }
 
 }
