@@ -3,9 +3,9 @@ require('dotenv').config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as momentTimezone from 'moment-timezone';
-import { AllExceptionsFilter } from './filters/http-exception.filter';
-import { LoggerInterceptor } from './interceptors/logger.interceptor';
-import { TimeoutInterceptor } from './interceptors/timeout.interceptor';
+import { AllExceptionsFilter } from './shared/filters/http-exception.filter';
+import { LoggerInterceptor } from './shared/interceptors/logger.interceptor';
+import { TimeoutInterceptor } from './shared/interceptors/timeout.interceptor';
 
 
 
