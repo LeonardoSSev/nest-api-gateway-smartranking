@@ -4,12 +4,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as momentTimezone from 'moment-timezone';
 import { AllExceptionsFilter } from './filters/http-exception.filter';
+import { LoggerInterceptor } from './interceptors/logger.interceptor';
+import { TimeoutInterceptor } from './interceptors/timeout.interceptor';
 
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.useGlobalInterceptors(new LoggerInterceptor, new TimeoutInterceptor);
   app.useGlobalFilters(new AllExceptionsFilter());
 
   defineTimezone();
